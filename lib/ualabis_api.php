@@ -3,13 +3,12 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . "ualabis_response.php";
 
 /**
- * UalaBis api
+ * UaláBis API
  */
-
 class UalabisApi
 {
     /**
-     * @var string The Username
+     * @var string The username
      */
     private $user_name;
 
@@ -31,12 +30,11 @@ class UalabisApi
     /**
      * Initializes the class.
      *
-     * @param string $user_name     The username
-     * @param string $client_id     The client ID
-     * @param string $client_secret The client secret id
-     * @param string $grant_type    The grant type
+     * @param string $user_name The username
+     * @param string $client_id The client ID
+     * @param string $client_secret_id The client secret ID
+     * @param string $grant_type The grant type
      */
-
     public function __construct($user_name, $client_id, $client_secret_id, $grant_type)
     {
         $this->user_name = $user_name;
@@ -46,17 +44,17 @@ class UalabisApi
     }
 
     /**
-     * Send a request to UalaBis API.
+     * Send a request to UaláBis API.
      *
-     * @param  string $method Specifies the endpoint and method to invoke
-     * @param  array  $params The parameters to include in the api call
-     * @param  array  $token  The parameters to include in the api call
-     * @param  string $type   The HTTP request type
-     * @return stdClass An object containing the api response
+     * @param string $method Specifies the endpoint and method to invoke
+     * @param array $params The parameters to include in the API call
+     * @param array $token The parameters to include in the API call
+     * @param string $type The HTTP request type
+     *
+     * @return stdClass An object containing the API response
      */
     private function apiRequest($method, array $params = [], $token, $type = "GET")
     {
-
         // Send request
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_TIMEOUT, 20);
@@ -67,7 +65,7 @@ class UalabisApi
 
         $headers = [
             "Content-Type: application/json",
-            "Authorization: Bearer " .$token,
+            "Authorization: Bearer " . $token,
         ];
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -102,48 +100,48 @@ class UalabisApi
     }
 
     /**
-     * Build the payment request.
+     * Build the token.
      *
      * @param  array $params An array containing the following arguments:
-     *                       - email: Customer's email address
-     *                       - amount: Amount in kobo (1/100 niara)
-     *                       - reference: Unique transaction reference. Only -, ., = and alphanumeric characters allowed.
-     *                       - metadata: An object with the cancel_action property which controls to url for an aborted transaction
-     * @return stdClass An object containing the api response
+     *  - user_name: Username for authentication.
+     *  - client_id: Application identifier.
+     *  - client_secret_id: Application secret for authentication.
+     *  - grant_type: Type of operation to obtain a token.
+     * @return stdClass API response object.
      */
     public function buildToken()
     {
         $params = [
-            "user_name" =>$this->user_name,
+            "user_name" => $this->user_name,
             "client_id" => $this->client_id,
             "client_secret_id" => $this->client_secret_id,
-            "grant_type" => $this->grant_type
+            "grant_type" => $this->grant_type,
         ];
 
-        return $this->apiRequest("https://auth.stage.ua.la/1/auth/token", $params, [], "POST");
+        return $this->apiRequest("https://auth.prod.ua.la/1/auth/token", $params, [], "POST");
     }
 
     /**
-     * Validate this payment.
+     * Build the payment request.
      *
-     * @param  string $reference The unique reference code for this payment
-     * @return stdClass An object containing the api response
+     * @param array $params An array with payment request data
+     * @param mixed $token The token
+     * @return stdClass An object containing the API response
      */
     public function buildPayment($params, $token)
     {
-        return $this->apiRequest("https://checkout.stage.ua.la/1/checkout", $params, $token, "POST");
+        return $this->apiRequest("https://checkout.prod.ua.la/1/checkout", $params, $token, "POST");
     }
 
     /**
      * Validate this payment.
      *
-     * @param  string $reference The unique reference code for this payment
-     * @param  string $token     The token of the invoice
-     * @return stdClass An object containing the api response
+     * @param string $reference The unique reference code for this payment
+     * @param mixed  $token The token of the invoice
+     * @return stdClass An object containing the API response
      */
     public function checkPayment($reference, $token)
     {
-        return $this->apiRequest("https://checkout.stage.ua.la/1/order/" . $reference, [], $token, "GET");
-
+        return $this->apiRequest("https://checkout.prod.ua.la/1/order/" . $reference, [], $token, "GET");
     }
 }

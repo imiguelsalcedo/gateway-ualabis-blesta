@@ -31,10 +31,10 @@ class UalabisApi
     /**
      * Initializes the class.
      *
-     * @param string $user_name The username
-     * @param string $client_id The client ID
+     * @param string $user_name     The username
+     * @param string $client_id     The client ID
      * @param string $client_secret The client secret id
-     * @param string $grant_type The grant type
+     * @param string $grant_type    The grant type
      */
 
     public function __construct($user_name, $client_id, $client_secret_id, $grant_type)
@@ -48,10 +48,10 @@ class UalabisApi
     /**
      * Send a request to UalaBis API.
      *
-     * @param string $method Specifies the endpoint and method to invoke
-     * @param array $params The parameters to include in the api call
-     * @param array $token The parameters to include in the api call
-     * @param string $type The HTTP request type
+     * @param  string $method Specifies the endpoint and method to invoke
+     * @param  array  $params The parameters to include in the api call
+     * @param  array  $token  The parameters to include in the api call
+     * @param  string $type   The HTTP request type
      * @return stdClass An object containing the api response
      */
     private function apiRequest($method, array $params = [], $token, $type = "GET")
@@ -75,7 +75,7 @@ class UalabisApi
         // Build GET request
         if ($type == "GET") {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-            $url = $method . "?" . http_build_query($params);
+            $method = $method . "?" . http_build_query($params);
         }
 
         // Build POST request
@@ -89,7 +89,7 @@ class UalabisApi
         }
 
         // Execute request
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, $method);
         $data = new stdClass();
         if (curl_errno($ch)) {
             $data->message = curl_error($ch);
@@ -104,11 +104,11 @@ class UalabisApi
     /**
      * Build the payment request.
      *
-     * @param array $params An array containing the following arguments:
-     *  - email: Customer's email address
-     *  - amount: Amount in kobo (1/100 niara)
-     *  - reference: Unique transaction reference. Only -, ., = and alphanumeric characters allowed.
-     *  - metadata: An object with the cancel_action property which controls to url for an aborted transaction
+     * @param  array $params An array containing the following arguments:
+     *                       - email: Customer's email address
+     *                       - amount: Amount in kobo (1/100 niara)
+     *                       - reference: Unique transaction reference. Only -, ., = and alphanumeric characters allowed.
+     *                       - metadata: An object with the cancel_action property which controls to url for an aborted transaction
      * @return stdClass An object containing the api response
      */
     public function buildToken()
@@ -126,7 +126,7 @@ class UalabisApi
     /**
      * Validate this payment.
      *
-     * @param string $reference The unique reference code for this payment
+     * @param  string $reference The unique reference code for this payment
      * @return stdClass An object containing the api response
      */
     public function buildPayment($params, $token)
@@ -138,7 +138,7 @@ class UalabisApi
      * Validate this payment.
      *
      * @param  string $reference The unique reference code for this payment
-     * @param string $token The token of the invoice
+     * @param  string $token     The token of the invoice
      * @return stdClass An object containing the api response
      */
     public function checkPayment($reference, $token)

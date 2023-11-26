@@ -1,0 +1,13 @@
+{
+	"version": "1.0.0",
+	"name": "UaláBis",
+	"description": "UaláBis is a platform to receive payments with credit and debit cards in Argentina.",
+	"authors": [
+		{
+			"name": "Miguel Salcedo",
+			"url": "https://github.com/imiguelsalcedo"
+		}
+	],
+	"currencies": ["ARS"],
+	"signup_url": "https://ualabis.com.ar/"
+}

@@ -1,0 +1,27 @@
+
+    <ul>
+        <li>
+            <?php
+            $this->Form->label($this->_('Ualabis.user_name', true), 'user_name');
+            $this->Form->fieldText('user_name', (isset($meta['user_name']) ? $meta['user_name'] : null), ['id' => 'user_name']);
+            ?>
+        </li>
+        <li>
+            <?php
+            $this->Form->label($this->_('Ualabis.client_id', true), 'client_id');
+            $this->Form->fieldText('client_id', (isset($meta['client_id']) ? $meta['client_id'] : null), ['id' => 'client_id']);
+            ?>
+        </li>
+        <li>
+            <?php
+            $this->Form->label($this->_('Ualabis.client_secret_id', true), 'client_secret_id');
+            $this->Form->fieldText('client_secret_id', (isset($meta['client_secret_id']) ? $meta['client_secret_id'] : null), ['id' => 'client_secret_id']);
+            ?>
+        </li>
+        <li>
+            <?php
+            $this->Form->label($this->_('Ualabis.grant_type', true), 'grant_type');
+            $this->Form->fieldText('grant_type', (isset($meta['grant_type']) ? $meta['grant_type'] : null), ['id' => 'grant_type']);
+            ?>
+        </li>
+    </ul>
